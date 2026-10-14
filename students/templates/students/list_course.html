@@ -1,0 +1,61 @@
+{% extends 'students/base.html' %}
+
+{% block title %}
+Courses List
+{% endblock %}
+{% block header %}
+<h1>Courses</h1>
+<input type="text" id="course-id">
+<button onclick="search()">search</button>
+{% endblock %}
+
+{% block content %}
+<ol>
+        <div id="result">
+            {% for course in courses %}
+                <li>{{ course.name }}</li>
+            {% endfor %}
+        </div>
+    </ol>
+
+    <h5>Add course</h5>
+{% csrf_token %}
+<input type="text" id="name" placeholder="name">
+<button class="btn btn-success" onclick="addCourse()">Add</button>
+
+    <script>   
+ function search() {
+        const id = document.getElementById("course-id").value;
+        fetch(`/course-data/${id}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerHTML = `<ol><li>${data.name}</li></ol>`;
+            });
+    }
+
+    function addCourse() {
+        const name = document.getElementById("name").value;
+        fetch('/course-data/create/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ name: name })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Course added successfully!');
+            document.getElementById("result").innerHTML += `<li>${name}</li>`;
+        });
+    }
+ 
+ </script>
+
+    
+    <!-- {% for course in courses %}
+        <h1>{{ course.id }}</h1>
+        <h2>{{ course.name }}</h2>
+        <p>{{ course.description }}</p>
+    {% endfor %} -->
+{% endblock %}

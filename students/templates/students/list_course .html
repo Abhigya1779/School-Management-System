@@ -1,0 +1,14 @@
+{% extends 'students/base.html' %}
+
+{% block title %}
+Courses List
+{% endblock %}
+
+{% block content %}
+    <h1>Courses</h1>
+    {% for course in courses %}
+        <h1>{{ course.id }}</h1>
+        <h2>{{ course.name }}</h2>
+        <p>{{ course.description }}</p>
+    {% endfor %}
+{% endblock %}

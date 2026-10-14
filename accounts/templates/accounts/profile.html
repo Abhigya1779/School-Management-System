@@ -1,0 +1,26 @@
+{% extends "students/base.html" %}
+
+{% block header %}
+<h1>profile page</h1>
+{%endblock%}
+
+{% block content %}
+
+{% if request.user.is_authenticated%}
+    {{request.user.is_authenticated}}
+    {{request.user.username}}
+    {{request.user.email}}
+    {{request.session.favorite_course}}
+{%else%}
+    <p>please login it in</p>
+{% endif %}
+
+<button onclick="sayhello()">Click ME</button>
+
+<script>
+    function sayhello(){
+        alert("Hello from javaScript!")
+    }
+</script>
+
+{%endblock%}
